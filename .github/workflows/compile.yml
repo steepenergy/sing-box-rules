@@ -1,41 +1,45 @@
 name: Compile Sing-box Rule-set
 
-# Триггеры: когда запускать автоматизацию
 on:
   push:
     paths:
-      - 'exclude-ru.json' # Запуск только если изменился этот файл
-  workflow_dispatch: # Позволяет запускать процесс вручную из интерфейса GitHub
+      - 'exclude-ru.json'
+  workflow_dispatch:
 
-# Разрешения для бота на отправку файлов обратно в репозиторий
 permissions:
   contents: write
 
 jobs:
   build:
-    runs-on: ubuntu-latest # Виртуальная машина, на которой все будет происходить
+    runs-on: ubuntu-latest
     
     steps:
-      # 1. Скачивание вашего репозитория на виртуальную машину
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Установка актуальной версии sing-box
-      - name: Install sing-box
+      - name: Install sing-box (Direct Download)
         run: |
-          bash <(curl -fsSL https://sing-box.app/web-install.sh)
+          # Находим ссылку на последнюю версию для Linux (Ubuntu)
+          LATEST_URL=$(curl -s https://api.github.com/repos/SagerNet/sing-box/releases/latest | grep "browser_download_url.*linux-amd64.tar.gz" | cut -d '"' -f 4)
+          
+          # Скачиваем и распаковываем
+          wget -qO sing-box.tar.gz $LATEST_URL
+          tar -xzf sing-box.tar.gz
+          
+          # Перемещаем бинарный файл в системную папку, чтобы команда стала доступна
+          sudo cp sing-box-*/sing-box /usr/local/bin/
+          
+          # Проверяем успешность установки
+          sing-box version
 
-      # 3. Компиляция JSON в SRS
       - name: Compile rule-set
         run: |
           sing-box rule-set compile --output exclude-ru.srs exclude-ru.json
 
-      # 4. Сохранение и отправка нового бинарного файла в репозиторий
       - name: Commit and Push binary
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add exclude-ru.srs
           
-          # Проверяем, есть ли изменения. Если есть - делаем коммит
           git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-compile to SRS" && git push)
