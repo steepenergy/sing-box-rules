@@ -1,0 +1,32 @@
+name: Sync External Rules
+
+# Триггеры запуска
+on:
+  schedule:
+    - cron: '0 3 * * *'  # Запускать каждый день в 03:00 (по UTC)
+  workflow_dispatch:     # Кнопка для ручного запуска в интерфейсе Actions
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download google_ai.srs
+        run: |
+          # Флаг -L заставляет curl идти по редиректам, пока не скачает сам файл
+          curl -L -o google_ai.srs "https://github.com/itdoginfo/allow-domains/releases/latest/download/google_ai.srs"
+
+      - name: Commit and Push binary
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add google_ai.srs
+          
+          # Если файл изменился - делаем коммит и пуш
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-sync google_ai.srs" && git push)
