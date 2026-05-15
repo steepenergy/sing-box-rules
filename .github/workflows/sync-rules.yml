@@ -20,10 +20,13 @@ jobs:
       - name: Download rule sets
         run: |
           # Флаг -L заставляет curl идти по редиректам, пока не скачает сам файл
-          curl -L -o google_ai.srs "https://github.com/itdoginfo/allow-domains/releases/latest/download/google_ai.srs"
+          curl -L -o geosite-category-ru "﻿https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ru.srs"
           
           # Скачиваем geosite-apple.srs по прямой ссылке
           curl -L -o geosite-apple.srs "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-apple.srs"
+
+          # Скачиваем geosite-google-deepmind.srs по прямой ссылке
+          curl -L -o geosite-google-deepmind.srs "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-google-deepmind.srs"
 
       - name: Commit and Push binaries
         run: |
@@ -31,7 +34,7 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
           # Добавляем оба файла в индекс
-          git add google_ai.srs geosite-apple.srs
+          git add geosite-category-ru geosite-apple.srs geosite-google-deepmind.srs
           
           # Если файлы изменились - делаем коммит и пуш
           git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-sync rule sets" && git push)
