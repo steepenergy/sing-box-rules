@@ -20,7 +20,7 @@ jobs:
       - name: Download rule sets
         run: |
           # Флаг -L заставляет curl идти по редиректам, пока не скачает сам файл
-          curl -L -o geosite-category-ru "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ru.srs"
+          curl -L -o geosite-category-ru.srs "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ru.srs"
           
           # Скачиваем geosite-apple.srs по прямой ссылке
           curl -L -o geosite-apple.srs "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-apple.srs"
@@ -34,7 +34,7 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
           # Добавляем оба файла в индекс
-          git add geosite-category-ru geosite-apple.srs geosite-google-deepmind.srs
+          git add geosite-category-ru.srs geosite-apple.srs geosite-google-deepmind.srs
           
           # Если файлы изменились - делаем коммит и пуш
           git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-sync rule sets" && git push)
