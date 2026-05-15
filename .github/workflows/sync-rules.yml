@@ -20,7 +20,7 @@ jobs:
       - name: Download rule sets
         run: |
           # Флаг -L заставляет curl идти по редиректам, пока не скачает сам файл
-          curl -L -o geosite-category-ru "﻿https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ru.srs"
+          curl -L -o geosite-category-ru "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ru.srs"
           
           # Скачиваем geosite-apple.srs по прямой ссылке
           curl -L -o geosite-apple.srs "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-apple.srs"
