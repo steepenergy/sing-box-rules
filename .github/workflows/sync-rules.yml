@@ -25,6 +25,9 @@ jobs:
           # Скачиваем geosite-apple.srs по прямой ссылке
           curl -L -o geosite-apple.srs "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-apple.srs"
 
+          # Скачиваем geoip-ru.srs по прямой ссылке
+          curl -L -o geoip-ru.srs "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-ru.srs"          
+
           # Скачиваем geosite-google-deepmind.srs по прямой ссылке
           curl -L -o geosite-google-deepmind.srs "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-google-deepmind.srs"
 
@@ -34,7 +37,7 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
           # Добавляем оба файла в индекс
-          git add geosite-category-ru.srs geosite-apple.srs geosite-google-deepmind.srs
+          git add geosite-category-ru.srs geosite-apple.srs geoip-ru.srs geosite-google-deepmind.srs
           
           # Если файлы изменились - делаем коммит и пуш
           git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-sync rule sets" && git push)
