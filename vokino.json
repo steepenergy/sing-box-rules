@@ -3,20 +3,21 @@
   "rules": [
     {
       "domain_suffix": [
+        "vokino.org",
         "vokino.pro",
-        "videobase.biz",
-        "cdnsqu.com",
-        "stream-balancer-allo-1.live",
-        "stream-balancer-allo-1.site",
-        "werkecdn.me",
         "cdn2cdn.com",
         "cdn2site.com",
-        "digital-cdn.net",
+        "cdnsqu.com",
         "cdntogo.net",
-        "loadbox.ws",
+        "digital-cdn.net",
         "fotpro135alto.com",
+        "interkh.com",
+        "loadbox.ws",
         "rstprgapipt.com",
-        "interkh.com"
+        "stream-balancer-allo-1.live",
+        "stream-balancer-allo-1.site",
+        "videobase.biz",
+        "werkecdn.me"
       ]
     }
   ]
