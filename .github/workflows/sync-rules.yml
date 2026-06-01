@@ -31,13 +31,17 @@ jobs:
           # Скачиваем geosite-google-deepmind.srs по прямой ссылке
           curl -L -o geosite-google-deepmind.srs "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-google-deepmind.srs"
 
+
+          # Скачиваем geosite-category-ntp.srs по прямой ссылке
+          curl -L -o geosite-category-ntp.srs "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ntp.srs"          
+
       - name: Commit and Push binaries
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
           # Добавляем оба файла в индекс
-          git add geosite-category-ru.srs geosite-apple.srs geoip-ru.srs geosite-google-deepmind.srs
+          git add geosite-category-ru.srs geosite-apple.srs geoip-ru.srs geosite-google-deepmind.srs geosite-category-ntp.srs
           
           # Если файлы изменились - делаем коммит и пуш
           git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-sync rule sets" && git push)
