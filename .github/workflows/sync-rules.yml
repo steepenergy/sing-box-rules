@@ -1,6 +1,5 @@
 name: Sync External Rules
 
-# Триггеры запуска
 on:
   schedule:
     - cron: '0 3 * * *'  # Запускать каждый день в 03:00 (по UTC)
@@ -19,31 +18,30 @@ jobs:
 
       - name: Download rule sets
         run: |
-          # Флаг -L заставляет curl идти по редиректам, пока не скачает сам файл
-          curl -L -o geosite-category-ru.srs "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ru.srs"
-          
-          # Скачиваем geosite-apple.srs по прямой ссылке
-          curl -L -o geosite-apple.srs "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-apple.srs"
+          # Теперь здесь просто удобный список файлов
+          FILES=(
+            "geosite-category-ru.srs"
+            "geosite-apple.srs"
+            "geoip-ru.srs"
+            "geosite-google.srs"
+            "geosite-google-deepmind.srs"
+            "geosite-category-ntp.srs"
+          )
 
-          # Скачиваем geoip-ru.srs по прямой ссылке
-          curl -L -o geoip-ru.srs "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-ru.srs"          
-
-          # Скачиваем geosite-google.srs по прямой ссылке
-          curl -L -o geosite-google.srs "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-google.srs"
-          
-          # Скачиваем geosite-google-deepmind.srs по прямой ссылке
-          curl -L -o geosite-google-deepmind.srs "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-google-deepmind.srs"
-
-          # Скачиваем geosite-category-ntp.srs по прямой ссылке
-          curl -L -o geosite-category-ntp.srs "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ntp.srs"          
+          for file in "${FILES[@]}"; do
+            # Магия Bash: отрезаем от имени файла всё, начиная с первого дефиса.
+            # Получаем либо "geosite", либо "geoip"
+            TYPE="${file%%-*}"
+            
+            # Подставляем полученный тип в базовый URL
+            URL="https://raw.githubusercontent.com/SagerNet/sing-${TYPE}/rule-set/${file}"
+            
+            echo "Downloading $file from sing-${TYPE}..."
+            curl -L -s -o "$file" "$URL"
+          done
 
       - name: Commit and Push binaries
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # Добавляем файлы в индекс
-          git add geosite-category-ru.srs geosite-apple.srs geoip-ru.srs geosite-google.srs geosite-google-deepmind.srs geosite-category-ntp.srs
-          
-          # Если файлы изменились - делаем коммит и пуш
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-sync rule sets" && git push)
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Auto-sync rule sets"
+          file_pattern: "*.srs"
