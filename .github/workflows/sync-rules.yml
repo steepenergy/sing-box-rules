@@ -42,8 +42,8 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Добавляем оба файла в индекс
-          git add geosite-category-ru.srs geosite-apple.srs geoip-ru.srs geosite-google-deepmind.srs geosite-category-ntp.srs
+          # Добавляем файлы в индекс
+          git add geosite-category-ru.srs geosite-apple.srs geoip-ru.srs geosite-google.srs geosite-google-deepmind.srs geosite-category-ntp.srs
           
           # Если файлы изменились - делаем коммит и пуш
           git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-sync rule sets" && git push)
