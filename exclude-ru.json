@@ -2,24 +2,25 @@
   "version": 1,
   "rules": [
     {
-      "domain_suffix": [    
+      "domain_suffix": [
         ".aero",
+        "3gppnetwork.org",
+        "best2pay.net",
         "bitwarden.com",
         "bitwarden.net",
+        "greywallpass.com",
+        "hva.im",
         "ipify.org",
-        "perplexity.ai",
-        "ostin.com",
+        "ipv4only.arpa",
         "ixbt.com",
         "ixbt.site",
-        "wps.com",
-        "nextdns.io",
-        "rbsgate.com",
-        "best2pay.net",
-        "vimu.tv",
-        "greywallpass.com",
         "mfa.center",
-        "3gppnetwork.org",
-        "ipv4only.arpa"
+        "nextdns.io",
+        "ostin.com",
+        "perplexity.ai",
+        "rbsgate.com",
+        "vimu.tv",
+        "wps.com"
       ]
     }
   ]
