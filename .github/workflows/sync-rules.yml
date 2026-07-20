@@ -26,6 +26,7 @@ jobs:
             "geosite-google.srs"
             "geosite-google-deepmind.srs"
             "geosite-category-ntp.srs"
+            "geosite-vokino.srs"
           )
 
           for file in "${FILES[@]}"; do
