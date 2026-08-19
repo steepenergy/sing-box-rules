@@ -25,6 +25,7 @@ jobs:
             "geoip-ru.srs"
             "geosite-google.srs"
             "geosite-google-deepmind.srs"
+            "geosite-youtube.srs"
             "geosite-category-ntp.srs"
             "geosite-vokino.srs"
           )
