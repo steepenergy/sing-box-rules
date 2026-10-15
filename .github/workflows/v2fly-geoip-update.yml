@@ -1,0 +1,50 @@
+
+name: Update v2fly GeoIP RU
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 4 * * 1"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Generate JSON
+        run: python scripts/build.py
+
+      - name: Install sing-box
+        run: |
+          go install github.com/sagernet/sing-box/cmd/sing-box@latest
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+
+      - name: Compile SRS
+        run: |
+          sing-box rule-set compile \
+            --output geoip-ru.srs geoip-ru.json
+
+      - name: Validate SRS
+        run: test -s geoip-ru.srs
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+          git add geoip-ru.json geoip-ru.srs
+          if ! git diff --cached --quiet; then
+            git commit -m "Update GeoIP RU"
+            git push
+          fi
