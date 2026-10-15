@@ -4,7 +4,7 @@ name: Update v2fly GeoIP RU
 on:
   workflow_dispatch:
   schedule:
-    - cron: "17 4 * * 1"
+    - cron: "37 4 * * 1"
 
 permissions:
   contents: write
@@ -17,13 +17,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.24.x"
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
-      - name: Generate JSON
-        run: python scripts/build.py
+      - name: Generate JSON from v2fly
+        run: python scripts/build-v2fly-geoip-ru.py
 
       - name: Install sing-box
         run: |
@@ -33,18 +38,21 @@ jobs:
       - name: Compile SRS
         run: |
           sing-box rule-set compile \
-            --output geoip-ru.srs geoip-ru.json
+            --output v2fly-geoip-ru.srs \
+            v2fly-geoip-ru.json
 
-      - name: Validate SRS
-        run: test -s geoip-ru.srs
+      - name: Validate output
+        run: test -s v2fly-geoip-ru.srs
 
       - name: Commit changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email \
             "41898282+github-actions[bot]@users.noreply.github.com"
-          git add geoip-ru.json geoip-ru.srs
+
+          git add v2fly-geoip-ru.json v2fly-geoip-ru.srs
+
           if ! git diff --cached --quiet; then
-            git commit -m "Update GeoIP RU"
+            git commit -m "Update v2fly GeoIP RU"
             git push
           fi
