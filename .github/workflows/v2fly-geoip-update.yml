@@ -4,7 +4,7 @@ name: Update v2fly GeoIP RU
 on:
   workflow_dispatch:
   schedule:
-    - cron: "37 4 * * 1"
+    - cron: "37 4 6 * *"  # v2fly публикует релиз 5-го числа в 00:00 UTC
 
 permissions:
   contents: write
