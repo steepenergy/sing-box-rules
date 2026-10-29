@@ -14,7 +14,7 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Download rule sets
         run: |
@@ -55,7 +55,7 @@ jobs:
           done
 
       - name: Commit and Push binaries
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "Auto-sync rule sets"
           file_pattern: "*.srs"
