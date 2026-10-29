@@ -1,3 +1,15 @@
+# runetfreedom-geoip-ru.srs <- runetfreedom/russia-v2ray-rules-dat
+#                              (ветка release, sing-box/rule-set-geoip/geoip-ru.srs)
+#
+#   Цепочка сборки:
+#   MaxMind GeoLite2-Country (CSV)
+#     -> Loyalsoldier/geoip: geoip.dat, страна по расположению
+#        (country, затем registered_country, затем represented_country)
+#     -> runetfreedom/russia-blocked-geoip: берёт geoip.dat Loyalsoldier целиком,
+#        категорию "ru" не меняет, добавляет свои (ru-blocked, re-filter и др.)
+#     -> runetfreedom/russia-v2ray-rules-dat: geodat2srs конвертирует в .srs
+#   runetfreedom пересобирает файлы каждые 6 часов; категория "ru" меняется
+#   вместе с выпусками Loyalsoldier/GeoLite2.
 name: Update runetfreedom GeoIP RU
 
 on:
@@ -21,8 +33,6 @@ jobs:
           # Любая ошибка останавливает шаг: старый файл остаётся, коммита не будет
           set -euo pipefail
 
-          # Страна "ru" из Loyalsoldier/geoip (MaxMind, по фактическому расположению),
-          # runetfreedom пересобирает файл каждые 6 часов
           URL="https://raw.githubusercontent.com/runetfreedom/russia-v2ray-rules-dat/release/sing-box/rule-set-geoip/geoip-ru.srs"
           FILE="runetfreedom-geoip-ru.srs"
 
