@@ -1,4 +1,10 @@
-
+# v2fly-geoip-ru.srs <- v2fly/geoip (ветка release, text/ru.txt)
+#
+#   База: DB-IP Lite Country (db-ip.com), независима от MaxMind.
+#   v2fly выбирает страну по расположению: country, затем registered_country,
+#   затем represented_country. Релиз собирается раз в месяц, 5-го в 00:00 UTC.
+#   scripts/build-v2fly-geoip-ru.py превращает ru.txt в v2fly-geoip-ru.json,
+#   sing-box компилирует его в .srs.
 name: Update v2fly GeoIP RU
 
 on:

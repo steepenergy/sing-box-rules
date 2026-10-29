@@ -1,3 +1,18 @@
+# Зеркало готовых rule-set от SagerNet.
+#
+# geosite-*.srs <- SagerNet/sing-geosite (ветка rule-set)
+#   База: v2fly/domain-list-community (dlc.dat) — списки доменов,
+#   которые сообщество ведёт вручную через pull request.
+#
+# geoip-ru.srs  <- SagerNet/sing-geoip (ветка rule-set)
+#   База: MaxMind GeoLite2-Country (Country.mmdb из Dreamacro/maxmind-geoip,
+#   обновляется раз в месяц, 12-го).
+#   Внимание: страна берётся только по registered_country (страна регистрации
+#   блока адресов), поэтому сюда попадают зарубежные подсети с регистрацией в РФ,
+#   например 80.77.164.0/24 (Meta CDN, Литва).
+#   См. https://github.com/SagerNet/sing-geoip/pull/9
+#   Наборы с выбором страны по расположению: runetfreedom-geoip-ru.srs (MaxMind)
+#   и v2fly-geoip-ru.srs (DB-IP).
 name: Sync External Rules
 
 on:

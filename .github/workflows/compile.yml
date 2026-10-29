@@ -1,3 +1,9 @@
+# Собственные списки этого репозитория, без внешних баз.
+#
+# exclude-ru.json -> exclude-ru.srs: исключения из российских списков
+#   (ведётся вручную).
+# vokino.json: свой список доменов VoKino; компиляция сейчас отключена,
+#   используется geosite-vokino.srs из SagerNet/sing-geosite.
 name: Compile Sing-box Rule-set
 
 on:
