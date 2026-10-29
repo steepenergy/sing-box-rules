@@ -17,11 +17,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: "1.24.x"
-
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -31,9 +26,22 @@ jobs:
         run: python scripts/build-v2fly-geoip-ru.py
 
       - name: Install sing-box
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          go install github.com/sagernet/sing-box/cmd/sing-box@latest
-          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+          set -euo pipefail
+
+          # Готовый бинарник последнего стабильного релиза вместо сборки из исходников
+          URL=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" \
+            https://api.github.com/repos/SagerNet/sing-box/releases/latest \
+            | jq -r '.assets[].browser_download_url | select(test("-linux-amd64\\.tar\\.gz$"))' \
+            | head -n 1)
+          test -n "$URL"
+
+          curl -fsSL --retry 3 --retry-delay 5 -o sing-box.tar.gz "$URL"
+          tar -xzf sing-box.tar.gz
+          sudo install sing-box-*/sing-box /usr/local/bin/sing-box
+          sing-box version
 
       - name: Compile SRS
         run: |
@@ -42,7 +50,9 @@ jobs:
             v2fly-geoip-ru.json
 
       - name: Validate output
-        run: test -s v2fly-geoip-ru.srs
+        run: |
+          test -s v2fly-geoip-ru.srs
+          test "$(head -c 3 v2fly-geoip-ru.srs)" = "SRS"
 
       - name: Commit changes
         run: |

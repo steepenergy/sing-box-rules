@@ -18,6 +18,9 @@ jobs:
 
       - name: Download rule sets
         run: |
+          # Любая ошибка останавливает шаг: старые файлы остаются, коммита не будет
+          set -euo pipefail
+
           # Теперь здесь просто удобный список файлов
           FILES=(
             "geosite-category-ru.srs"
@@ -39,7 +42,16 @@ jobs:
             URL="https://raw.githubusercontent.com/SagerNet/sing-${TYPE}/rule-set/${file}"
             
             echo "Downloading $file from sing-${TYPE}..."
-            curl -L -s -o "$file" "$URL"
+            # -f: при HTTP-ошибке (404, 5xx) не сохранять страницу ошибки как файл
+            curl -fsSL --retry 3 --retry-delay 5 -o "$file.tmp" "$URL"
+
+            # Настоящий rule-set всегда начинается с сигнатуры "SRS"
+            if [ "$(head -c 3 "$file.tmp")" != "SRS" ]; then
+              echo "::error::$file: downloaded file is not a valid SRS rule-set"
+              exit 1
+            fi
+
+            mv "$file.tmp" "$file"
           done
 
       - name: Commit and Push binaries
