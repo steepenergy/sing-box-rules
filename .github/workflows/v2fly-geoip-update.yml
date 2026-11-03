@@ -16,6 +16,11 @@ on:
 permissions:
   contents: write
 
+# Общая очередь для всех workflow, которые коммитят в репозиторий
+concurrency:
+  group: repo-autocommit
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -71,5 +76,6 @@ jobs:
 
           if ! git diff --cached --quiet; then
             git commit -m "Update v2fly GeoIP RU"
+            git pull --rebase
             git push
           fi
