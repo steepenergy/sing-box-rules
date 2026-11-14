@@ -46,6 +46,7 @@ jobs:
             "geosite-category-ru.srs"
             "geosite-apple.srs"
             "geosite-anthropic.srs"
+            "geosite-perplexity.srs"
             "geoip-ru.srs"
             "geosite-google.srs"
             "geosite-google-deepmind.srs"
